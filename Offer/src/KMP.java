@@ -5,6 +5,12 @@
  */
 public class KMP {
     public static void main(String[] args) {
+        String P = "ABACABAD";
+        String T = "BBC ABACABACABAD ABCDABDE";
+        int result = BF(T, P);
+        System.out.println("BF=" + result);
+        int result2 = KMP(T,P);
+        System.out.println("KMP=" + result2);
 
     }
 
@@ -14,7 +20,7 @@ public class KMP {
      * @param P 子串
      * @return 子串第一次在主串中出现的位置
      */
-    private static int bf(String T,String P){
+    private static int BF(String T,String P){
         char[] t = T.toCharArray();
         char[] p = P.toCharArray();
 
@@ -29,12 +35,11 @@ public class KMP {
                 i = i - j + 1;
                 j = 0;
             }
-        }
-        if(j == p.length){
+
+        }if(j == p.length){
             return i - j;
-        }else{
-            return -1;
         }
+        return -1;
     }
 
     /**
@@ -47,34 +52,44 @@ public class KMP {
         char[] t = T.toCharArray();
         char[] p = P.toCharArray();
 
-        int i = 0;
-        int j = 0;
-
         int[] next = getNext(P);
 
-        while(i < t.length && j < p.length){
-            if(j == -1 || t[i] == p[j]){
-                i++;
-                j++;
-            }else{
-                //i = i - j + 1;不需要回溯i
-                j = next[j];
-            }
-        }
+        int i ,j;
 
-        if(j == p.length){
-            return i - j;
-        }else{
-            return -1;
+        for(i=j=0;i < t.length && j < p.length;i++){
+            while(j > 0 && t[i] != p[j]){
+                j = next[j-1];
+            }
+            if(t[i] == p[j]){
+                j++;
+            }
+            /*if(j == p.length){
+                return i - j + 1;
+            }*/
         }
+        if(j == p.length){
+            return i - j ;
+        }
+        return -1;
     }
 
     /**
-     * 计算每一个位置j对应的k，用一个数组next来保存，next[j] = k，表示当T[i] != P[j]时，j指针的下一个位置。
+     * 计算每一个位置i对应的j，用一个数组next来保存，next[i] = j，表示模式串的0~i位置的前后缀最长相同子串。
      * @param str
      * @return next[]
      */
     private static int[] getNext(String str){
-        return null;
+        int[] next = new int[str.length()];
+        next[0] = 0;
+        for (int i = 1,j = 0; i < str.length(); i++) {
+            while(j > 0 && str.charAt(i) != str.charAt(j)){
+                j = next[j - 1];
+            }
+            if(str.charAt(i) == str.charAt(j)){
+                j++;
+            }
+            next[i] = j;
+        }
+        return next;
     }
 }

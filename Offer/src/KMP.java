@@ -54,21 +54,16 @@ public class KMP {
 
         int[] next = getNext(P);
 
-        int i ,j;
-
-        for(i=j=0;i < t.length && j < p.length;i++){
+        for(int i=0,j=0;i < t.length && j < p.length;i++){
             while(j > 0 && t[i] != p[j]){
                 j = next[j-1];
             }
             if(t[i] == p[j]){
                 j++;
             }
-            /*if(j == p.length){
+            if(j == p.length){
                 return i - j + 1;
-            }*/
-        }
-        if(j == p.length){
-            return i - j ;
+            }
         }
         return -1;
     }

@@ -1,3 +1,8 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author : 李文龙
  * @createTime : 2021/9/7 20:57
@@ -69,21 +74,21 @@ public class KMP {
     }
 
     /**
-     * 计算每一个位置i对应的j，用一个数组next来保存，next[i] = j，表示模式串的0~i位置的前后缀最长相同子串。
+     * 计算每一个位置j对应的k，用一个数组next来保存，next[j] = k，表示模式串的0~i位置的前后缀最长相同子串。
      * @param str
      * @return next[]
      */
     private static int[] getNext(String str){
         int[] next = new int[str.length()];
         next[0] = 0;
-        for (int i = 1,j = 0; i < str.length(); i++) {
-            while(j > 0 && str.charAt(i) != str.charAt(j)){
-                j = next[j - 1];
+        for (int j = 1,k = 0; j < str.length(); j++) {
+            while(k > 0 && str.charAt(j) != str.charAt(k)){
+                k = next[k - 1];
             }
-            if(str.charAt(i) == str.charAt(j)){
-                j++;
+            if(str.charAt(j) == str.charAt(k)){
+                k++;
             }
-            next[i] = j;
+            next[j] = k;
         }
         return next;
     }
